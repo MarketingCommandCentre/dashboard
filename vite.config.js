@@ -62,7 +62,6 @@ export default defineConfig({
           'js/main-calendar.js',
           'js/utils-modal.js',
           'js/auth.js',
-          'js/cycle-view.js',
           'js/spreadsheet.js',
           'js/recent-activity.js',
           'js/mini-calendar.js',
@@ -70,8 +69,7 @@ export default defineConfig({
           'js/kanban.js',
           'js/audit-log.js',
           'js/namespace-adapter.js',
-          'msa_logo.png',
-          'msa_logo_white.png'
+          'marketing_command_centre_logo.jpg'
         ];
         
         // Create js directory in dist if it doesn't exist

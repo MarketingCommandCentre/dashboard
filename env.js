@@ -5,7 +5,7 @@
 window.MSA_ENV = {
   // API Configuration from environment variables
   // Set these values to override the default API configuration
-  API_URL: 'https://dashapi.lensbridge.tech', // e.g., "https://api.utmmsa.com" or "http://localhost:8080"
+  API_URL: 'http://localhost:8080', // e.g., "https://api.utmmsa.com" or "http://localhost:8080"
   API_KEY: undefined, // e.g., "your-bot-api-key" (only needed for bot operations)
   
   // Environment info

@@ -33,12 +33,11 @@
     loginScreen.innerHTML = `
       <div class="login-container">
         <div class="login-header">
-          <img src="msa_logo.png" alt="MSA Logo" class="login-logo" />
-          <h1>UTM MSA Marketing Command Centre</h1>
-          <div class="bismillah-login">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+          <img src="marketing_command_centre_logo.jpg" alt="UTMSU Logo" class="login-logo" />
+          <h1>UTMSU Marketing Command Centre</h1>
         </div>
         <div class="login-content">
-          <h2>السلام عليكم! 👋</h2>
+          <h2>Welcome! 👋</h2>
           <p>Please sign in with your Discord account to access the Marketing Command Centre.</p>
           <p class="login-requirement">✓ You must be a member of the Marketing Command Centre</p>
           <button class="login-button" onclick="initiateLogin()">
@@ -47,10 +46,6 @@
             </svg>
             Sign in with Discord
           </button>
-          <div class="login-footer">
-            <p class="ayah-login">وَقُلِ ٱعْمَلُوا۟ فَسَيَرَى ٱللَّهُ عَمَلَكُمْ</p>
-            <p class="citation-login">— At-Tawbah 9:105</p>
-          </div>
         </div>
       </div>`;
     document.body.appendChild(loginScreen);
@@ -73,7 +68,7 @@
     const greetingEl = document.querySelector('.user-greeting');
     const loginBtn = document.getElementById('login-btn');
     if (greetingEl && user) {
-      greetingEl.textContent = `السلام عليكم, ${user.username}`;
+      greetingEl.textContent = `Welcome, ${user.username}`;
       greetingEl.style.cursor = 'pointer';
       greetingEl.style.display = 'inline-block';
       greetingEl.onclick = () => showUserMenu(user);

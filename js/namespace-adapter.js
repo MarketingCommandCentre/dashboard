@@ -12,7 +12,6 @@
   const mappings = [
     ['modules.events','loadEvents'],['modules.events','displayEvents'],['modules.events','updateEventsSummary'],
     ['modules.calendar','loadMainCalendar'],
-    ['modules.cycle','loadCycleView'],
     ['modules.spreadsheet','loadSpreadsheetView'],['modules.spreadsheet','applySpreadsheetFilters'],['modules.spreadsheet','resetSpreadsheetFilters'],['modules.spreadsheet','exportSpreadsheetCsv'],
     ['modules.recent','loadRecentActivity'],
     ['modules.miniCalendar','loadMiniCalendar'],

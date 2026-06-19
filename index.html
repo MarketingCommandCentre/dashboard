@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UTM MSA Marketing Command Center</title>
+  <title>UTMSU Marketing Command Centre</title>
   
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="msa_logo.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="msa_logo.png">
-  <link rel="apple-touch-icon" href="msa_logo.png">
-  <link rel="shortcut icon" href="msa_logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="marketing_command_centre_logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="marketing_command_centre_logo.jpg">
+  <link rel="apple-touch-icon" href="marketing_command_centre_logo.jpg">
+  <link rel="shortcut icon" href="marketing_command_centre_logo.jpg">
   
   <link rel="stylesheet" href="style.css" />
 
@@ -17,7 +17,7 @@
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Chart.js for analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,9 +29,8 @@
   <!-- Navigation Sidebar -->
   <nav class="sidebar">
     <div class="sidebar-header">
-      <img id="logo" src="msa_logo.png" alt="MSA Logo" />
-      <h2>UTM MSA Marketing</h2>
-      <div class="bismillah-sidebar">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <img id="logo" src="marketing_command_centre_logo.jpg" alt="UTMSU Logo" />
+      <h2>UTMSU Marketing</h2>
     </div>
     
     <div class="nav-menu">
@@ -70,10 +69,6 @@
     </div>
     
     <div class="sidebar-footer">
-      <div class="ayah-sidebar">
-        <p class="highlight">وَقُلِ ٱعْمَلُوا۟ فَسَيَرَى ٱللَّهُ عَمَلَكُمْ</p>
-        <a href="https://quran.com/at-tawbah/105" target="_blank"><p class="citation">— At-Tawbah 9:105</p></a>
-      </div>
       <div class="version-badge">v2026.2</div>
     </div>
 
@@ -89,14 +84,14 @@
         <button class="sidebar-toggle">☰</button>
         <h1>
           <span class="title-full">Marketing Command Centre</span>
-          <span class="title-mobile">MSA</span>
+          <span class="title-mobile">UTMSU</span>
         </h1>
       </div>
       <div class="header-right">
         <div id="api-status" class="api-status">🔄 Connecting...</div>
         <button id="toggle-mode" class="mode-toggle">🌙</button>
         <div class="user-menu">
-          <span class="user-greeting">السلام عليكم</span>
+          <span class="user-greeting">Welcome</span>
           <button id="login-btn" class="login-btn" style="display: none;">🔐 Login with Discord</button>
         </div>
       </div>
@@ -161,26 +156,12 @@
           <div id="mini-calendar"></div>
         </div>
 
-        <!-- Cycle View -->
-        <div class="dashboard-card cycle-view">
-          <h3>🔄 Current Cycle</h3>
-          <div id="cycle-view-content" class="cycle-content">
-            <div class="loading">Loading cycle info...</div>
-          </div>
-        </div>
-
         <!-- Quick Links -->
         <div class="dashboard-card quick-links">
           <h3>🔗 Quick Links</h3>
           <div class="links-grid">
             <a href="https://www.lensbridge.tech/" target="_blank" class="link-item">
               <span>🔗</span>LensBridge
-            </a>
-            <a href="https://www.notion.so/utmmsa2023-24/25-26-20793a1f50b3802fa699ea4681c955b5" target="_blank" class="link-item">
-              <span>🧭</span>MSA Notion
-            </a>
-            <a href="https://www.notion.so/utmmsa2023-24/Marketing-20793a1f50b38177a868e8bf46ba31ad" target="_blank" class="link-item">
-              <span>🗂</span>Marketing
             </a>
             <a href="https://www.utm.utoronto.ca/registrar/dates" target="_blank" class="link-item">
               <span>📅</span>UTM Dates
@@ -404,20 +385,12 @@
       <div class="section-header">
         <h2>📅 Interactive Deadline Calendar</h2>
         <div class="calendar-controls">
-          <button id="cycle-view-toggle" class="cycle-toggle-btn">
-            <span class="toggle-icon">🔄</span>
-            <span class="toggle-text">Cycle View: OFF</span>
-            <span class="toggle-hint">Hover to highlight • SHIFT to reverse</span>
-          </button>
           <div class="calendar-legend">
             <span class="legend-item status-inqueue">📥 In Queue</span>
             <span class="legend-item status-inprogress">🔄 In Progress</span>
             <span class="legend-item status-awaitingposting">⏳ Awaiting Posting</span>
             <span class="legend-item status-done">✅ Done</span>
             <span class="legend-item status-blocked">🚫 Blocked</span>
-            <span class="legend-item cycle-request-legend">Request Window</span>
-            <span class="legend-item cycle-production-legend">Production Window</span>
-            <span class="legend-item cycle-posting-legend">Posting Window</span>
           </div>
         </div>
       </div>
@@ -590,7 +563,7 @@
 
   <!-- Footer -->
   <footer class="main-footer">
-    <p>JazakumAllahu khairan! • Built with 💙 for UTM MSA Marketing Team</p>
+    <p>Built with 💙 for the UTMSU Marketing Team</p>
   </footer>
 
   <!-- Scripts -->
@@ -606,7 +579,6 @@
   <!-- Modularized dashboard scripts -->
   <script src="/js/utils-modal.js"></script>
   <script src="/js/auth.js"></script>
-  <script src="/js/cycle-view.js"></script>
   <script src="/js/spreadsheet.js"></script>
   <script src="/js/recent-activity.js"></script>
   <script src="/js/mini-calendar.js"></script>

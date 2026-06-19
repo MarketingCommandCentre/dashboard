@@ -13,7 +13,7 @@ window.isGuestMode = false; // Expose to window for other modules
 
 // Wait for DOM and API service to load
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log('🚀 Initializing MSA Marketing Dashboard...');
+  console.log('🚀 Initializing UTMSU Marketing Dashboard...');
   
   // Wait for API service to be ready
   if (window.apiService) {
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   if (urlParams.get('error') === 'auth_failed') {
-    showToast('Authentication failed. Please ensure you are a member of the UTM MSA Discord server.', 'error');
+    showToast('Authentication failed. Please ensure you are a member of the UTMSU Discord server.', 'error');
     // Clean up URL
     window.history.replaceState({}, document.title, '/');
   }
@@ -107,7 +107,7 @@ function setupAuthErrorHandlers() {
   // Handle 403 Forbidden - user not in required server
   window.addEventListener('auth:forbidden', () => {
     console.warn('🚫 Access forbidden');
-    showToast('Access denied. Please ensure you are a member of the UTM MSA Discord server.', 'error');
+    showToast('Access denied. Please ensure you are a member of the UTMSU Discord server.', 'error');
     showLoginScreen();
   });
   
@@ -136,13 +136,12 @@ function showLoginScreen() {
   loginScreen.innerHTML = `
     <div class="login-container">
       <div class="login-header">
-        <img src="msa_logo.png" alt="MSA Logo" class="login-logo" />
-        <h1>UTM MSA Marketing Command Centre</h1>
-        <div class="bismillah-login">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+        <img src="marketing_command_centre_logo.jpg" alt="UTMSU Logo" class="login-logo" />
+        <h1>UTMSU Marketing Command Centre</h1>
       </div>
-      
+
       <div class="login-content">
-        <h2>السلام عليكم! 👋</h2>
+        <h2>Welcome! 👋</h2>
         <p>Please sign in with your Discord account to access the Marketing Command Centre.</p>
         <p class="login-requirement">✓ You must be a member of the Marketing Command Centre</p>
         
@@ -160,11 +159,6 @@ function showLoginScreen() {
           Continue as Guest
         </button>
         <p class="guest-note">Guest mode provides limited access to the Cycle View and Calendar features</p>
-        
-        <div class="login-footer">
-          <p class="ayah-login">وَقُلِ ٱعْمَلُوا۟ فَسَيَرَى ٱللَّهُ عَمَلَكُمْ</p>
-          <p class="citation-login">— At-Tawbah 9:105</p>
-        </div>
       </div>
     </div>
   `;
@@ -209,7 +203,7 @@ function updateUserGreeting(user) {
   const loginBtn = document.getElementById('login-btn');
   
   if (greetingEl && user) {
-    greetingEl.textContent = `السلام عليكم, ${user.username}`;
+    greetingEl.textContent = `Welcome, ${user.username}`;
     greetingEl.style.cursor = 'pointer';
     greetingEl.style.display = 'inline-block';
     greetingEl.onclick = () => showUserMenu(user);
@@ -221,7 +215,7 @@ function updateUserGreeting(user) {
   } else if (greetingEl && !user) {
     // Handle guest mode or not authenticated
     if (isGuestMode) {
-      greetingEl.textContent = 'السلام عليكم, Guest';
+      greetingEl.textContent = 'Welcome, Guest';
       greetingEl.style.cursor = 'default';
       greetingEl.style.display = 'inline-block';
       greetingEl.onclick = null;
@@ -494,7 +488,7 @@ function setupModeToggle() {
     const isNightMode = document.body.classList.contains("night-mode");
     
     if (logo) {
-      logo.src = isNightMode ? "msa_logo_white.png" : "msa_logo.png";
+      logo.src = "marketing_command_centre_logo.jpg";
     }
     toggleButton.textContent = isNightMode ? "☀️" : "🌙";
     
@@ -530,7 +524,7 @@ function applyInitialTheme() {
     if (useDark) {
       document.body.classList.add('night-mode');
       const logo = document.getElementById('logo');
-      if (logo) logo.src = 'msa_logo_white.png';
+      if (logo) logo.src = 'marketing_command_centre_logo.jpg';
       const toggleButton = document.getElementById('toggle-mode');
       if (toggleButton) toggleButton.textContent = '☀️';
     }
@@ -549,8 +543,7 @@ async function loadAllData() {
     await Promise.all([
       loadDashboardStats(),
       loadRecentActivity(),
-      loadMiniCalendar(),
-      loadCycleView()
+      loadMiniCalendar()
     ]);
     console.log('✅ All data loaded');
   } catch (error) {
@@ -561,12 +554,6 @@ async function loadAllData() {
 
 function loadGuestData() {
   console.log('👤 Loading guest mode data...');
-  // In guest mode, load cycle view and calendar (no API calls needed)
-  const container = document.getElementById('cycle-view-content');
-  if (container) {
-    loadCycleView();
-  }
-  
   // Show message in other dashboard cards
   showGuestModeLimitations();
 }
@@ -600,9 +587,6 @@ function updateElement(id, value) {
 
 // ========== CALENDAR FUNCTIONS ==========
 // Moved loadMiniCalendar to js/mini-calendar.js and exposed as window.loadMiniCalendar
-
-// ========== CYCLE VIEW ==========
-// Moved cycle view logic to js/cycle-view.js (window.loadCycleView)
 
 // ========== CALENDAR CYCLE HELPERS ==========
 // Calendar cycle helpers moved to js/main-calendar.js
@@ -1508,24 +1492,5 @@ window.addEventListener('resize', () => {
   } else {
     // Mobile: remove desktop collapsed state
     mainContent.classList.remove('sidebar-collapsed');
-  }
-  
-  // Setup cycle view toggle button
-  const cycleToggleBtn = document.getElementById('cycle-view-toggle');
-  if (cycleToggleBtn) {
-    cycleToggleBtn.addEventListener('click', function() {
-      if (typeof window.toggleCycleView === 'function') {
-        window.toggleCycleView();
-      }
-    });
-  }
-});
-
-// Defensive: event delegation so the toggle works even if the button is re-rendered
-document.addEventListener('click', function(e) {
-  const tgt = e.target && (e.target.id === 'cycle-view-toggle' ? e.target : e.target.closest && e.target.closest('#cycle-view-toggle'));
-  if (!tgt) return;
-  if (typeof window.toggleCycleView === 'function') {
-    window.toggleCycleView();
   }
 });
