@@ -1,18 +1,74 @@
+import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { LayoutDashboard, RefreshCw } from 'lucide-react';
+
 import { PageHeader } from '@/components/PageHeader';
-import { Card } from '@/components/ui/card';
-import { LayoutDashboard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { RequestDetailDialog } from '@/components/RequestDetailDialog';
+import { useRequests } from '@/hooks/useRequests';
+import type { Request } from '@/types';
+
+import { StatCards } from '@/features/dashboard/StatCards';
+import { computeOverviewStats } from '@/features/dashboard/stats';
+import { RecentActivity } from '@/features/dashboard/RecentActivity';
+import { QuickActions } from '@/features/dashboard/QuickActions';
+import { MiniCalendar } from '@/features/dashboard/MiniCalendar';
+import { CurrentCycle } from '@/features/dashboard/CurrentCycle';
+import { QuickLinks } from '@/features/dashboard/QuickLinks';
+
+const intro = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4 },
+};
 
 export function DashboardPage() {
+  const { data, isLoading, isFetching, refetch } = useRequests();
+  const requests = useMemo<Request[]>(() => data ?? [], [data]);
+  const stats = useMemo(() => computeOverviewStats(requests), [requests]);
+
+  const [selected, setSelected] = useState<Request | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const openRequest = (request: Request) => {
+    setSelected(request);
+    setDialogOpen(true);
+  };
+
   return (
     <div className="space-y-6">
-      <PageHeader title="Dashboard" description="Overview of marketing requests and cycle status." icon={LayoutDashboard} />
-      <Card className="flex min-h-64 flex-col items-center justify-center gap-2 p-10 text-center">
-        <LayoutDashboard className="size-8 text-muted-foreground/50" />
-        <p className="text-sm font-medium">Dashboard — coming soon</p>
-        <p className="max-w-sm text-xs text-muted-foreground">
-          This page is a stub. It will be implemented as part of the React rebuild.
-        </p>
-      </Card>
+      <PageHeader
+        title="Dashboard"
+        description="Overview of marketing requests and cycle status."
+        icon={LayoutDashboard}
+        actions={
+          <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
+            <RefreshCw className={isFetching ? 'size-4 animate-spin' : 'size-4'} />
+            Refresh
+          </Button>
+        }
+      />
+
+      <StatCards stats={stats} loading={isLoading} />
+
+      <motion.div {...intro} className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <RecentActivity requests={requests} loading={isLoading} onSelect={openRequest} />
+        </div>
+        <QuickActions onRefresh={() => refetch()} refreshing={isFetching} />
+      </motion.div>
+
+      <motion.div {...intro} className="grid gap-4 lg:grid-cols-3">
+        <MiniCalendar requests={requests} />
+        <CurrentCycle />
+        <QuickLinks />
+      </motion.div>
+
+      <RequestDetailDialog
+        request={selected}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   );
 }
