@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
@@ -40,7 +40,7 @@ export function DashboardPage() {
       <PageHeader
         title="Dashboard"
         description="Overview of marketing requests and cycle status."
-        icon={LayoutDashboard}
+        emoji="📊"
         actions={
           <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
             <RefreshCw className={isFetching ? 'size-4 animate-spin' : 'size-4'} />

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import type { EventClickArg } from '@fullcalendar/core';
-import { CalendarDays, Layers } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 import { PageHeader } from '@/components/PageHeader';
 import { RequestDetailDialog } from '@/components/RequestDetailDialog';
@@ -93,7 +93,7 @@ export function CalendarPage() {
       <PageHeader
         title="Calendar"
         description="Posting schedule across the month, colored by request status."
-        icon={CalendarDays}
+        emoji="📅"
         actions={
           <div className="flex items-center gap-2">
             <Layers className="size-4 text-muted-foreground" />

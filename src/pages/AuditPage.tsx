@@ -146,7 +146,7 @@ export function AuditPage() {
       <PageHeader
         title="Audit Log"
         description="History of every change made to requests."
-        icon={ScrollText}
+        emoji="📜"
         actions={
           <>
             <Button variant="outline" onClick={() => void refetch()}>

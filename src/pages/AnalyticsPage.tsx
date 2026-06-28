@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Activity,
-  BarChart3,
   Building2,
   CalendarClock,
   CheckCircle2,
@@ -105,7 +104,7 @@ export function AnalyticsPage() {
       <PageHeader
         title="Analytics"
         description="Charts and metrics for marketing output."
-        icon={BarChart3}
+        emoji="📈"
         actions={
           <div className="flex items-center gap-1 rounded-full border bg-muted/40 p-1">
             {PERIOD_OPTIONS.map((option) => (

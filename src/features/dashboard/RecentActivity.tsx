@@ -42,16 +42,18 @@ export function RecentActivity({
           <p className="p-5 text-sm text-muted-foreground">No recent activity.</p>
         ) : (
           <ScrollArea className="h-[280px]">
-            <ul className="divide-y">
+            <ul className="flex flex-col gap-2 p-4">
               {recent.map((r) => (
                 <li key={String(r.channelID)}>
                   <button
                     type="button"
                     onClick={() => onSelect(r)}
-                    className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-muted/50"
+                    className="group flex w-full items-center gap-3 rounded-md border-l-[3px] border-l-accent bg-muted px-3 py-2.5 text-left transition-colors hover:bg-accent/10"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{r.title || 'Untitled request'}</p>
+                      <p className="truncate text-sm font-semibold text-primary transition-colors group-hover:text-accent dark:text-foreground">
+                        {r.title || 'Untitled request'}
+                      </p>
                       <p className="mt-0.5 text-xs text-muted-foreground">
                         {r.requestType ? `${r.requestType} · ` : ''}
                         {relativeTime(r.updatedAt ?? r.createdAt)}

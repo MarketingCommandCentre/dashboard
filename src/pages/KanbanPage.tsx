@@ -10,7 +10,6 @@ import {
   type DragStartEvent,
 } from '@dnd-kit/core';
 import { motion } from 'framer-motion';
-import { Columns3 } from 'lucide-react';
 
 import { PageHeader } from '@/components/PageHeader';
 import { RequestDetailDialog } from '@/components/RequestDetailDialog';
@@ -135,7 +134,7 @@ export function KanbanPage() {
         <PageHeader
           title="Kanban"
           description="Drag requests across status columns, or advance them in one click."
-          icon={Columns3}
+          emoji="🗂️"
           actions={
             <Select
               value={department}

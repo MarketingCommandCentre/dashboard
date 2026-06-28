@@ -43,7 +43,7 @@ export function QuickLinks() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 rounded-xl border bg-muted/30 px-3 py-2.5 text-sm font-medium transition-colors hover:bg-muted/60"
+            className="group flex items-center gap-2.5 rounded-md bg-muted px-3 py-2.5 text-sm font-medium text-primary transition-all hover:translate-x-1 hover:bg-secondary dark:text-foreground"
           >
             <span className="text-base">{link.emoji}</span>
             <span className="flex-1 truncate">{link.label}</span>

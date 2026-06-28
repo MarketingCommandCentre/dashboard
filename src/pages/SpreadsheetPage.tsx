@@ -6,7 +6,6 @@ import {
   ArrowUpDown,
   Download,
   Search,
-  Table as TableIcon,
 } from 'lucide-react';
 
 import { PageHeader } from '@/components/PageHeader';
@@ -199,7 +198,7 @@ export function SpreadsheetPage() {
       <PageHeader
         title="Spreadsheet"
         description="Sortable table of every request."
-        icon={TableIcon}
+        emoji="🧾"
         actions={
           <Button variant="outline" size="sm" onClick={handleExport} disabled={sorted.length === 0}>
             <Download className="size-4" />

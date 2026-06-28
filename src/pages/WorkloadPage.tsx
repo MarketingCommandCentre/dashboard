@@ -1,4 +1,4 @@
-import { Megaphone, Palette, Users, Video } from 'lucide-react';
+import { Megaphone, Palette, Video } from 'lucide-react';
 import { PageHeader } from '@/components/PageHeader';
 import { WorkloadSection } from '@/features/workload/WorkloadSection';
 import { CyclePanel } from '@/features/workload/CyclePanel';
@@ -9,7 +9,7 @@ export function WorkloadPage() {
       <PageHeader
         title="Workload"
         description="Team capacity across managers, designers, and creators."
-        icon={Users}
+        emoji="👥"
       />
 
       <div className="grid gap-4 lg:grid-cols-3">

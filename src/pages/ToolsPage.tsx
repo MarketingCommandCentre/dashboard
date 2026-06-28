@@ -10,7 +10,6 @@ import {
   Moon,
   Settings2,
   Sun,
-  Wrench,
 } from 'lucide-react';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -132,7 +131,7 @@ export function ToolsPage() {
 
   return (
     <motion.div {...intro} className="space-y-6">
-      <PageHeader title="Tools & Settings" description="Utilities, diagnostics, and preferences." icon={Wrench} />
+      <PageHeader title="Tools & Settings" description="Utilities, diagnostics, and preferences." emoji="🛠️" />
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* ---------- API Testing ---------- */}
