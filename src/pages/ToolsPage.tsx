@@ -156,7 +156,7 @@ export function ToolsPage() {
               </Button>
             </div>
 
-            <div className="rounded-2xl border bg-muted/40 p-4">
+            <div className="rounded-xl border bg-muted/40 p-4">
               {result === null ? (
                 <p className="text-xs text-muted-foreground">No tests run yet. Results appear here.</p>
               ) : (
@@ -230,7 +230,7 @@ export function ToolsPage() {
                       type="button"
                       onClick={() => setTheme(value)}
                       className={cn(
-                        'flex flex-col items-center gap-1.5 rounded-2xl border px-3 py-3 text-center transition-all',
+                        'flex flex-col items-center gap-1.5 rounded-xl border px-3 py-3 text-center transition-all',
                         active ? 'border-primary bg-primary/5' : 'border-transparent bg-muted/60 hover:bg-muted',
                       )}
                     >

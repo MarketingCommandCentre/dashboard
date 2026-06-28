@@ -129,7 +129,7 @@ export function AnalyticsPage() {
       />
 
       {isError ? (
-        <div className="surface-card flex min-h-56 flex-col items-center justify-center gap-2 rounded-[28px] border p-10 text-center">
+        <div className="surface-card flex min-h-56 flex-col items-center justify-center gap-2 rounded-xl border p-10 text-center">
           <Activity className="size-8 text-destructive/60" />
           <p className="text-sm font-medium">Failed to load analytics data.</p>
         </div>
@@ -297,7 +297,7 @@ function MetricItem({
   hint: string;
 }) {
   return (
-    <div className="rounded-2xl border bg-muted/30 p-4">
+    <div className="rounded-xl border bg-muted/30 p-4">
       <div className="flex items-center gap-2 text-muted-foreground">
         <Icon className="size-4" />
         <span className="text-xs font-medium uppercase tracking-wide">{label}</span>

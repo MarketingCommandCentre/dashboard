@@ -38,7 +38,7 @@ export function FilterPanel({
   activeFilterCount: number;
 }) {
   return (
-    <aside className="surface-card flex h-fit flex-col gap-5 rounded-[24px] border p-5">
+    <aside className="surface-card flex h-fit flex-col gap-5 rounded-xl border p-5">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-extrabold uppercase tracking-[0.12em] text-muted-foreground">
           Filters

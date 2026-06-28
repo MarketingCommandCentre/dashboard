@@ -24,7 +24,7 @@ export function SummaryPanel({ requests }: { requests: Request[] }) {
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
       {items.map((item) => (
-        <div key={item.label} className="rounded-2xl bg-muted/70 px-3 py-3">
+        <div key={item.label} className="rounded-xl bg-muted/70 px-3 py-3">
           <p className={`text-xl font-extrabold ${item.danger ? 'text-destructive' : ''}`}>
             {item.value}
           </p>

@@ -163,7 +163,7 @@ export function AuditPage() {
 
       <StatBar total={events.length} filtered={filtered.length} breakdown={breakdown} />
 
-      <div className="surface-card space-y-4 rounded-2xl border border-border/60 p-4">
+      <div className="surface-card space-y-4 rounded-xl border border-border/60 p-4">
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
           <div className="space-y-1.5">
             <Label htmlFor="audit-search">Search</Label>
@@ -245,7 +245,7 @@ export function AuditPage() {
         )}
       </div>
 
-      <div className="surface-card overflow-hidden rounded-2xl border border-border/60">
+      <div className="surface-card overflow-hidden rounded-xl border border-border/60">
         <AuditTable
           events={pageEvents}
           names={names}
@@ -279,7 +279,7 @@ function StatBar({
   breakdown: Array<[string, number]>;
 }) {
   return (
-    <div className="surface-card flex flex-wrap items-center gap-4 rounded-2xl border border-border/60 p-4">
+    <div className="surface-card flex flex-wrap items-center gap-4 rounded-xl border border-border/60 p-4">
       <Stat label="Total Events" value={total} />
       <div className="h-8 w-px bg-border" />
       <Stat label="Filtered" value={filtered} />

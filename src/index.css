@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource-variable/geist";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -11,64 +10,69 @@
   --color-blue: #003d7a;
   --color-gold: #ffd700;
   --color-gold-soft: #ffe566;
-  --color-light-bg: #f4f6fb;
-  --color-dark-bg: #0a1422;
-  --font-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --color-light-bg: #f8f9fa;
+  --color-dark-bg: #121212;
+  /* Fonts — match the original dashboard: Montserrat body, Cinzel display, Amiri Arabic */
+  --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Montserrat', system-ui, sans-serif;
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-arabic: 'Amiri', serif;
 }
 
 :root {
-  --background: #f4f6fb;
-  --foreground: #0d1b30;
+  --background: #f8f9fa;
+  --foreground: #0d1b2a;
   --card: #ffffff;
-  --card-foreground: #0d1b30;
+  --card-foreground: #0d1b2a;
   --popover: #ffffff;
-  --popover-foreground: #0d1b30;
+  --popover-foreground: #0d1b2a;
   --primary: #002855;
   --primary-foreground: #ffffff;
-  --secondary: #e4ebf6;
-  --secondary-foreground: #0d1b30;
-  --muted: #eef1f7;
-  --muted-foreground: #5a6b85;
+  --secondary: #e9ecef;
+  --secondary-foreground: #002855;
+  --muted: #f1f3f5;
+  --muted-foreground: #6c757d;
   --accent: #ffd700;
   --accent-foreground: #002855;
   --destructive: #dc3545;
   --destructive-foreground: #ffffff;
-  --border: rgba(0, 40, 85, 0.12);
-  --input: rgba(0, 40, 85, 0.14);
+  --border: #e9ecef;
+  --input: #dee2e6;
   --ring: rgba(0, 61, 122, 0.40);
-  --radius: 0.9rem;
+  /* 12px / 8px corners like the original */
+  --radius: 0.75rem;
   --sidebar-bg: #002855;
   --sidebar-foreground: #e8eefb;
   --surface-elevated: #ffffff;
-  --shadow-soft: 0 18px 40px rgba(7, 20, 44, 0.08);
-  --shadow-card: 0 12px 30px rgba(7, 20, 44, 0.06);
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.10);
 }
 
 .dark {
-  --background: #0a1422;
-  --foreground: #e6edf8;
-  --card: #111e33;
-  --card-foreground: #e6edf8;
-  --popover: #111e33;
-  --popover-foreground: #e6edf8;
-  --primary: #4d94ff;
+  --background: #121212;
+  --foreground: #e9ecef;
+  --card: #1e1e1e;
+  --card-foreground: #e9ecef;
+  --popover: #252525;
+  --popover-foreground: #e9ecef;
+  --primary: #4a9eff;
   --primary-foreground: #04101f;
-  --secondary: #16263f;
-  --secondary-foreground: #d6e1f2;
-  --muted: #13223a;
-  --muted-foreground: #8aa0c0;
+  --secondary: #2d2d2d;
+  --secondary-foreground: #e9ecef;
+  --muted: #2d2d2d;
+  --muted-foreground: #8a8d91;
   --accent: #ffd700;
-  --accent-foreground: #0a1730;
-  --destructive: #ff6b75;
-  --destructive-foreground: #0a1422;
-  --border: rgba(120, 165, 230, 0.14);
-  --input: rgba(120, 165, 230, 0.16);
-  --ring: rgba(77, 148, 255, 0.45);
-  --sidebar-bg: #06122a;
-  --sidebar-foreground: #d8e3f7;
-  --surface-elevated: #15243d;
-  --shadow-soft: 0 22px 48px rgba(0, 0, 0, 0.40);
-  --shadow-card: 0 16px 36px rgba(0, 0, 0, 0.28);
+  --accent-foreground: #121212;
+  --destructive: #ff6b7a;
+  --destructive-foreground: #121212;
+  --border: #404040;
+  --input: #404040;
+  --ring: rgba(74, 158, 255, 0.45);
+  --sidebar-bg: #1a1a1a;
+  --sidebar-foreground: #e9ecef;
+  --surface-elevated: #252525;
+  --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.50);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.40);
 }
 
 @theme inline {
@@ -133,19 +137,56 @@
 
 /* ---------- Dashboard utility classes ---------- */
 
+/* White card with a thin grey border and a soft lift on hover — the
+   original dashboard's `.dashboard-card` look. */
 .surface-card {
   background: var(--card);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.surface-card:hover {
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-2px);
 }
 
 .glass {
-  background: color-mix(in srgb, var(--card) 80%, transparent);
-  backdrop-filter: blur(16px) saturate(1.3);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Navy → blue diagonal gradient used by the sidebar and primary buttons. */
+.app-gradient {
+  background: linear-gradient(135deg, #002855 0%, #003d7a 100%);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-arabic {
+  font-family: var(--font-arabic);
 }
 
 .page-title {
   @apply text-2xl font-semibold tracking-tight;
+  color: var(--primary);
+}
+
+.dark .page-title {
+  color: var(--foreground);
+}
+
+/* Cinzel gold pill — sidebar version badge. */
+.version-badge {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--color-gold);
+  background: linear-gradient(135deg, rgba(211, 175, 90, 0.15), rgba(36, 84, 142, 0.15));
+  border: 2px solid rgba(211, 175, 90, 0.3);
+  border-radius: 20px;
 }
 
 .section-shell {

@@ -58,7 +58,7 @@ function AssigneeRow({
 }) {
   const counts = statusCounts(member.requests);
   return (
-    <div className="flex items-center gap-3 rounded-2xl border bg-card/60 px-4 py-3">
+    <div className="flex items-center gap-3 rounded-xl border bg-card/60 px-4 py-3">
       <MemberAvatar name={name} />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold">{name}</p>
@@ -86,7 +86,7 @@ function AssigneeRow({
 /** A member row built from an unknown member-map entry (defensive). */
 function SummaryRow({ summary, name }: { summary: MemberSummary; name: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border bg-card/60 px-4 py-3">
+    <div className="flex items-center gap-3 rounded-xl border bg-card/60 px-4 py-3">
       <MemberAvatar name={name} />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold">{name}</p>
@@ -111,7 +111,7 @@ function SummaryRow({ summary, name }: { summary: MemberSummary; name: string })
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed py-10 text-center">
+    <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed py-10 text-center">
       <Inbox className="size-7 text-muted-foreground/50" />
       <p className="text-xs text-muted-foreground">{message}</p>
     </div>
@@ -146,7 +146,7 @@ export function WorkloadSection({ kind, title, icon: Icon, delay = 0 }: Workload
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
-      className="surface-card flex flex-col gap-4 rounded-[28px] border p-5"
+      className="surface-card flex flex-col gap-4 rounded-xl border p-5"
     >
       <header className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
@@ -167,11 +167,11 @@ export function WorkloadSection({ kind, title, icon: Icon, delay = 0 }: Workload
         {isLoading ? (
           <div className="space-y-2">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="h-16 animate-pulse rounded-2xl bg-muted/60" />
+              <div key={i} className="h-16 animate-pulse rounded-xl bg-muted/60" />
             ))}
           </div>
         ) : isError ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed py-10 text-center">
+          <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed py-10 text-center">
             <AlertCircle className="size-7 text-destructive/60" />
             <p className="text-xs text-muted-foreground">Couldn&apos;t load workload for this role.</p>
           </div>

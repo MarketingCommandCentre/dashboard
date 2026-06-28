@@ -36,7 +36,7 @@ export function CyclePanel({ delay = 0 }: { delay?: number }) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
-      className="surface-card flex flex-col gap-4 rounded-[28px] border p-5"
+      className="surface-card flex flex-col gap-4 rounded-xl border p-5"
     >
       <header className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
@@ -56,7 +56,7 @@ export function CyclePanel({ delay = 0 }: { delay?: number }) {
       </header>
 
       {isLoading ? (
-        <div className="h-40 animate-pulse rounded-2xl bg-muted/60" />
+        <div className="h-40 animate-pulse rounded-xl bg-muted/60" />
       ) : (
         <div className="space-y-4">
           {/* Development window + progress */}
@@ -87,7 +87,7 @@ export function CyclePanel({ delay = 0 }: { delay?: number }) {
           </div>
 
           {/* Next cycle + posting window */}
-          <div className="rounded-2xl border border-dashed p-3">
+          <div className="rounded-xl border border-dashed p-3">
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-xs font-medium">
                 <CalendarClock className="size-3.5 text-primary" />

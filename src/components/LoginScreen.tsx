@@ -6,7 +6,7 @@ export function LoginScreen() {
 
   return (
     <div className="flex min-h-screen w-full flex-1 items-center justify-center bg-gradient-to-br from-[#002855] via-[#003163] to-[#003d7a] p-6 text-white">
-      <div className="glass w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl">
+      <div className="w-full max-w-md rounded-xl border border-white/15 bg-white/5 p-8 text-center shadow-[var(--shadow-soft)] backdrop-blur-sm">
         <img
           src="/msa_logo_white.png"
           alt="UTM MSA"

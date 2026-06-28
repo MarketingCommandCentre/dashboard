@@ -39,31 +39,32 @@ interface StatusColor {
   border: string;
 }
 
+// Solid status-pill colors carried over from the original dashboard.
 const STATUS_COLORS: Record<RequestStatus, StatusColor> = {
   IN_QUEUE: {
-    hex: '#6c757d',
-    badge: 'bg-slate-500/15 text-slate-600 dark:text-slate-300',
-    border: 'border-slate-400',
+    hex: '#3498db',
+    badge: 'bg-[#3498db] text-white border-transparent',
+    border: 'border-[#3498db]',
   },
   IN_PROGRESS: {
-    hex: '#007bff',
-    badge: 'bg-blue-500/15 text-blue-600 dark:text-blue-300',
-    border: 'border-blue-500',
+    hex: '#f39c12',
+    badge: 'bg-[#f39c12] text-white border-transparent',
+    border: 'border-[#f39c12]',
   },
   AWAITING_POSTING: {
-    hex: '#ffc107',
-    badge: 'bg-amber-400/20 text-amber-700 dark:text-amber-300',
-    border: 'border-amber-400',
+    hex: '#9b59b6',
+    badge: 'bg-[#9b59b6] text-white border-transparent',
+    border: 'border-[#9b59b6]',
   },
   DONE: {
-    hex: '#28a745',
-    badge: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300',
-    border: 'border-emerald-500',
+    hex: '#27ae60',
+    badge: 'bg-[#27ae60] text-white border-transparent',
+    border: 'border-[#27ae60]',
   },
   BLOCKED: {
-    hex: '#dc3545',
-    badge: 'bg-red-500/15 text-red-600 dark:text-red-300',
-    border: 'border-red-500',
+    hex: '#e74c3c',
+    badge: 'bg-[#e74c3c] text-white border-transparent',
+    border: 'border-[#e74c3c]',
   },
 };
 

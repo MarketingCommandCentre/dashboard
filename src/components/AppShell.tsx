@@ -1,21 +1,11 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  ClipboardList,
-  Table,
-  Columns3,
-  Calendar,
-  BarChart3,
-  ScrollText,
-  Users,
-  Wrench,
   PanelLeftClose,
   PanelLeftOpen,
   Moon,
   Sun,
   LogIn,
-  type LucideIcon,
 } from 'lucide-react';
 
 import { AnimatedOutlet } from '@/components/AnimatedOutlet';
@@ -25,24 +15,24 @@ import { cn } from '@/lib/utils';
 import { useTheme } from '@/hooks/useTheme';
 import { useAuth } from '@/contexts/AuthContext';
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = 'v2027';
 
 interface NavItem {
   to: string;
   label: string;
-  icon: LucideIcon;
+  emoji: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/requests', label: 'Requests', icon: ClipboardList },
-  { to: '/spreadsheet', label: 'Spreadsheet', icon: Table },
-  { to: '/kanban', label: 'Kanban', icon: Columns3 },
-  { to: '/calendar', label: 'Calendar', icon: Calendar },
-  { to: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { to: '/audit', label: 'Audit Log', icon: ScrollText },
-  { to: '/workload', label: 'Workload', icon: Users },
-  { to: '/tools', label: 'Tools', icon: Wrench },
+  { to: '/', label: 'Dashboard', emoji: '📊' },
+  { to: '/requests', label: 'Events & Requests', emoji: '📋' },
+  { to: '/spreadsheet', label: 'Spreadsheet View', emoji: '🧾' },
+  { to: '/kanban', label: 'Kanban Board', emoji: '🗂️' },
+  { to: '/calendar', label: 'Calendar', emoji: '📅' },
+  { to: '/analytics', label: 'Analytics', emoji: '📈' },
+  { to: '/audit', label: 'Audit Log', emoji: '📜' },
+  { to: '/workload', label: 'Workload', emoji: '👥' },
+  { to: '/tools', label: 'Tools', emoji: '🛠️' },
 ];
 
 export function AppShell() {
@@ -57,24 +47,33 @@ export function AppShell() {
       {/* Sidebar */}
       <aside
         className={cn(
-          'sticky top-0 z-30 hidden h-screen shrink-0 flex-col bg-sidebar-bg text-sidebar-foreground transition-[width] duration-200 md:flex',
-          collapsed ? 'w-[72px]' : 'w-64',
+          'app-gradient sticky top-0 z-30 hidden h-screen shrink-0 flex-col text-sidebar-foreground transition-[width] duration-300 md:flex',
+          collapsed ? 'w-[80px]' : 'w-[280px]',
         )}
       >
-        <div className="flex items-center gap-3 px-4 py-5">
-          <img src="/msa_logo_white.png" alt="UTM MSA" className="size-9 shrink-0 object-contain" />
+        <div
+          className={cn(
+            'flex flex-col items-center gap-2 border-b border-white/10 px-6 py-7 text-center',
+            collapsed && 'px-2 py-5',
+          )}
+        >
+          <img
+            src="/msa_logo_white.png"
+            alt="UTM MSA"
+            className={cn('shrink-0 rounded-full object-contain shadow-md', collapsed ? 'size-12' : 'size-[60px]')}
+          />
           {!collapsed && (
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold leading-tight">UTM MSA Marketing</p>
-              <p className="truncate text-[11px] text-sidebar-foreground/60" dir="rtl" lang="ar">
+            <>
+              <h2 className="font-display text-lg font-semibold text-[var(--color-gold)]">UTM MSA Marketing</h2>
+              <p className="font-arabic text-sm text-white/80" dir="rtl" lang="ar">
                 بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
               </p>
-            </div>
+            </>
           )}
         </div>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-2 no-scrollbar">
-          {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
+        <nav className="flex-1 overflow-y-auto py-4 no-scrollbar">
+          {NAV_ITEMS.map(({ to, label, emoji }) => (
             <NavLink
               key={to}
               to={to}
@@ -82,46 +81,47 @@ export function AppShell() {
               title={collapsed ? label : undefined}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                  collapsed && 'justify-center',
+                  'flex items-center gap-3 border-l-[3px] px-6 py-3.5 text-sm font-medium transition-all duration-300',
+                  collapsed && 'justify-center px-2',
                   isActive
-                    ? 'bg-white/15 text-white'
-                    : 'text-sidebar-foreground/70 hover:bg-white/10 hover:text-white',
+                    ? 'border-[var(--color-gold)] bg-[rgba(255,215,0,0.15)] text-[var(--color-gold)]'
+                    : 'border-transparent text-white/80 hover:translate-x-1 hover:border-[var(--color-gold)] hover:bg-white/10 hover:text-white',
                 )
               }
             >
-              <Icon className="size-5 shrink-0" />
+              <span className="w-7 shrink-0 text-center text-xl">{emoji}</span>
               {!collapsed && <span className="truncate">{label}</span>}
             </NavLink>
           ))}
         </nav>
 
-        <div className="border-t border-white/10 px-3 py-3">
+        <div className="border-t border-white/10 px-4 py-4">
           {!collapsed && (
-            <div className="mb-2 px-2 text-[11px] leading-relaxed text-sidebar-foreground/55">
-              <p dir="rtl" lang="ar" className="text-sm text-sidebar-foreground/70">
+            <div className="mb-3 px-2 text-center">
+              <p className="font-arabic text-base leading-relaxed text-white" dir="rtl" lang="ar">
                 وَقُلِ ٱعْمَلُوا۟ فَسَيَرَى ٱللَّهُ عَمَلَكُمْ
               </p>
-              <p className="mt-0.5">— At-Tawbah 9:105</p>
+              <p className="mt-1 text-xs text-white/85">— At-Tawbah 9:105</p>
+              <div className="version-badge mt-3 inline-block px-4 py-1.5 text-sm">{APP_VERSION}</div>
             </div>
           )}
           <button
             type="button"
             onClick={() => setCollapsed((c) => !c)}
-            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs text-sidebar-foreground/70 transition-colors hover:bg-white/10 hover:text-white"
+            className="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
           >
             {collapsed ? <PanelLeftOpen className="size-4" /> : <PanelLeftClose className="size-4" />}
-            {!collapsed && <span>Collapse · v{APP_VERSION}</span>}
+            {!collapsed && <span>Collapse</span>}
           </button>
         </div>
       </aside>
 
       {/* Main area */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-border bg-background/80 px-4 py-3 backdrop-blur-md lg:px-6">
+        <header className="sticky top-0 z-20 flex h-[70px] items-center justify-between gap-3 border-b border-border bg-card px-4 shadow-[var(--shadow-card)] lg:px-6">
           {/* Mobile nav (horizontal scroll) */}
           <nav className="flex items-center gap-1 overflow-x-auto md:hidden no-scrollbar">
-            {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
+            {NAV_ITEMS.map(({ to, emoji, label }) => (
               <NavLink
                 key={to}
                 to={to}
@@ -129,12 +129,12 @@ export function AppShell() {
                 title={label}
                 className={({ isActive }) =>
                   cn(
-                    'flex size-9 shrink-0 items-center justify-center rounded-lg transition-colors',
-                    isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted',
+                    'flex size-9 shrink-0 items-center justify-center rounded-lg text-lg transition-colors',
+                    isActive ? 'bg-[rgba(255,215,0,0.18)]' : 'hover:bg-muted',
                   )
                 }
               >
-                <Icon className="size-4.5" />
+                <span>{emoji}</span>
               </NavLink>
             ))}
           </nav>
