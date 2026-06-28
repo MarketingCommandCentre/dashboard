@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* MSA brand palette */
+  --color-navy: #002855;
+  --color-navy-deep: #001a3a;
+  --color-blue: #003d7a;
+  --color-gold: #ffd700;
+  --color-gold-soft: #ffe566;
+  --color-light-bg: #f4f6fb;
+  --color-dark-bg: #0a1422;
+  --font-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --background: #f4f6fb;
+  --foreground: #0d1b30;
+  --card: #ffffff;
+  --card-foreground: #0d1b30;
+  --popover: #ffffff;
+  --popover-foreground: #0d1b30;
+  --primary: #002855;
+  --primary-foreground: #ffffff;
+  --secondary: #e4ebf6;
+  --secondary-foreground: #0d1b30;
+  --muted: #eef1f7;
+  --muted-foreground: #5a6b85;
+  --accent: #ffd700;
+  --accent-foreground: #002855;
+  --destructive: #dc3545;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 40, 85, 0.12);
+  --input: rgba(0, 40, 85, 0.14);
+  --ring: rgba(0, 61, 122, 0.40);
+  --radius: 0.9rem;
+  --sidebar-bg: #002855;
+  --sidebar-foreground: #e8eefb;
+  --surface-elevated: #ffffff;
+  --shadow-soft: 0 18px 40px rgba(7, 20, 44, 0.08);
+  --shadow-card: 0 12px 30px rgba(7, 20, 44, 0.06);
+}
+
+.dark {
+  --background: #0a1422;
+  --foreground: #e6edf8;
+  --card: #111e33;
+  --card-foreground: #e6edf8;
+  --popover: #111e33;
+  --popover-foreground: #e6edf8;
+  --primary: #4d94ff;
+  --primary-foreground: #04101f;
+  --secondary: #16263f;
+  --secondary-foreground: #d6e1f2;
+  --muted: #13223a;
+  --muted-foreground: #8aa0c0;
+  --accent: #ffd700;
+  --accent-foreground: #0a1730;
+  --destructive: #ff6b75;
+  --destructive-foreground: #0a1422;
+  --border: rgba(120, 165, 230, 0.14);
+  --input: rgba(120, 165, 230, 0.16);
+  --ring: rgba(77, 148, 255, 0.45);
+  --sidebar-bg: #06122a;
+  --sidebar-foreground: #d8e3f7;
+  --surface-elevated: #15243d;
+  --shadow-soft: 0 22px 48px rgba(0, 0, 0, 0.40);
+  --shadow-card: 0 16px 36px rgba(0, 0, 0, 0.28);
+}
+
+@theme inline {
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.3);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  width: 100%;
+}
+
+/* ---------- Dashboard utility classes ---------- */
+
+.surface-card {
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+}
+
+.glass {
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+
+.page-title {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+.section-shell {
+  @apply px-6 py-6 xl:px-8;
+  max-width: 100%;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
