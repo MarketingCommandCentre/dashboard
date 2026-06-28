@@ -1,18 +1,39 @@
+import { Megaphone, Palette, Users, Video } from 'lucide-react';
 import { PageHeader } from '@/components/PageHeader';
-import { Card } from '@/components/ui/card';
-import { Users } from 'lucide-react';
+import { WorkloadSection } from '@/features/workload/WorkloadSection';
+import { CyclePanel } from '@/features/workload/CyclePanel';
 
 export function WorkloadPage() {
   return (
-    <div className="space-y-6">
-      <PageHeader title="Workload" description="Team capacity across designers and creators." icon={Users} />
-      <Card className="flex min-h-64 flex-col items-center justify-center gap-2 p-10 text-center">
-        <Users className="size-8 text-muted-foreground/50" />
-        <p className="text-sm font-medium">Workload — coming soon</p>
-        <p className="max-w-sm text-xs text-muted-foreground">
-          This page is a stub. It will be implemented as part of the React rebuild.
-        </p>
-      </Card>
+    <div className="section-shell space-y-6">
+      <PageHeader
+        title="Workload"
+        description="Team capacity across managers, designers, and creators."
+        icon={Users}
+      />
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <WorkloadSection
+          kind="social-media-managers"
+          title="Social Media Managers"
+          icon={Megaphone}
+          delay={0.05}
+        />
+        <WorkloadSection
+          kind="graphic-designers"
+          title="Graphic Designers"
+          icon={Palette}
+          delay={0.1}
+        />
+        <WorkloadSection
+          kind="content-creators"
+          title="Content Creators"
+          icon={Video}
+          delay={0.15}
+        />
+      </div>
+
+      <CyclePanel delay={0.2} />
     </div>
   );
 }
