@@ -1,0 +1,97 @@
+/* FullCalendar theme overrides to match the dashboard surface. Scoped under
+   .msa-calendar so it never leaks into other parts of the app. */
+
+.msa-calendar {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: color-mix(in srgb, var(--muted) 60%, transparent);
+  --fc-today-bg-color: color-mix(in srgb, var(--primary) 8%, transparent);
+  --fc-event-text-color: #fff;
+}
+
+.msa-calendar .fc {
+  font-family: inherit;
+}
+
+.msa-calendar .fc .fc-toolbar-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.msa-calendar .fc .fc-col-header-cell-cushion {
+  padding: 8px 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+}
+
+.msa-calendar .fc .fc-daygrid-day-number {
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.msa-calendar .fc .fc-daygrid-day.fc-day-other .fc-daygrid-day-number {
+  opacity: 0.4;
+}
+
+.msa-calendar .fc .fc-daygrid-event {
+  border-radius: 6px;
+  padding: 1px 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.msa-calendar .fc .fc-daygrid-event:hover {
+  filter: brightness(1.08);
+}
+
+/* Button styling to echo shadcn buttons */
+.msa-calendar .fc .fc-button {
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  color: var(--secondary-foreground);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 6px 12px;
+  box-shadow: none;
+}
+
+.msa-calendar .fc .fc-button:hover {
+  background: color-mix(in srgb, var(--secondary) 80%, var(--foreground));
+}
+
+.msa-calendar .fc .fc-button:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+}
+
+.msa-calendar .fc .fc-button-primary:not(:disabled).fc-button-active,
+.msa-calendar .fc .fc-button-primary:not(:disabled):active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.msa-calendar .fc .fc-button-primary:disabled {
+  opacity: 0.5;
+}
+
+/* Cycle background events: soft fills with a small corner label. */
+.msa-calendar .fc .fc-bg-event {
+  opacity: 0.2;
+}
+
+.msa-calendar .fc .fc-bg-event .fc-event-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.95;
+  margin: 2px 4px;
+}
