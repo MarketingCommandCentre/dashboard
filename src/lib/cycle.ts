@@ -43,6 +43,24 @@ function toYMD(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
+/** Which fixed 14-day cycle a date falls in (0-indexed from CYCLE_START_DATE). */
+export function cycleNumberForDate(date: Date): number {
+  const start = parseLocalDate(CYCLE_START_DATE) ?? new Date(CYCLE_START_DATE);
+  start.setHours(0, 0, 0, 0);
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return Math.floor(differenceInCalendarDays(d, start) / CYCLE_LENGTH_DAYS);
+}
+
+/** Start/end dates (inclusive) of a given 0-indexed cycle number. */
+export function cycleDateRange(cycleNumber: number): { start: Date; end: Date } {
+  const start = parseLocalDate(CYCLE_START_DATE) ?? new Date(CYCLE_START_DATE);
+  start.setHours(0, 0, 0, 0);
+  const rangeStart = addDays(start, cycleNumber * CYCLE_LENGTH_DAYS);
+  const rangeEnd = addDays(rangeStart, CYCLE_LENGTH_DAYS - 1);
+  return { start: rangeStart, end: rangeEnd };
+}
+
 /** Compute the current development cycle purely from the calendar (local fallback). */
 export function computeLocalCurrentCycle(reference: Date = new Date()): DevelopmentCycle {
   const today = new Date(reference);

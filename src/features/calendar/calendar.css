@@ -82,16 +82,59 @@
   opacity: 0.5;
 }
 
-/* Cycle background events: soft fills with a small corner label. */
-.msa-calendar .fc .fc-bg-event {
-  opacity: 0.2;
+/* Interactive cycle highlighting (hover-driven). The day frame is positioned so
+   the corner label can anchor to it. */
+.msa-calendar .fc .fc-daygrid-day-frame {
+  position: relative;
 }
 
-.msa-calendar .fc .fc-bg-event .fc-event-title {
-  font-size: 0.6rem;
-  font-weight: 700;
+.msa-calendar.cycle-active .fc-daygrid-day {
+  cursor: crosshair;
+  transition: background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.msa-calendar .fc-daygrid-day.cycle-request {
+  background-color: rgba(135, 206, 250, 0.3) !important;
+  box-shadow: inset 0 0 0 2px #87ceeb;
+}
+
+.msa-calendar .fc-daygrid-day.cycle-production {
+  background-color: rgba(255, 215, 0, 0.3) !important;
+  box-shadow: inset 0 0 0 2px #ffd700;
+}
+
+.msa-calendar .fc-daygrid-day.cycle-posting {
+  background-color: rgba(144, 238, 144, 0.3) !important;
+  box-shadow: inset 0 0 0 2px #90ee90;
+}
+
+.dark .msa-calendar .fc-daygrid-day.cycle-request {
+  background-color: rgba(74, 158, 255, 0.25) !important;
+  box-shadow: inset 0 0 0 2px #4a9eff;
+}
+
+.dark .msa-calendar .fc-daygrid-day.cycle-production {
+  background-color: rgba(255, 215, 0, 0.2) !important;
+  box-shadow: inset 0 0 0 2px #ffd700;
+}
+
+.dark .msa-calendar .fc-daygrid-day.cycle-posting {
+  background-color: rgba(77, 211, 101, 0.25) !important;
+  box-shadow: inset 0 0 0 2px #4dd365;
+}
+
+.msa-calendar .cycle-label {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 5;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.95;
-  margin: 2px 4px;
+  pointer-events: none;
 }

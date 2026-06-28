@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -10,37 +10,72 @@ import { RequestDetailDialog } from '@/components/RequestDetailDialog';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { cn } from '@/lib/utils';
 
 import { useRequests } from '@/hooks/useRequests';
-import { useWorkload } from '@/hooks/useWorkload';
-import { computeCycleWindows } from '@/lib/cycle';
-import type { CycleInfo, Request } from '@/types';
+import type { Request } from '@/types';
 
 import { CalendarLegend } from '@/features/calendar/CalendarLegend';
-import { buildCycleBackgroundEvents, buildRequestEvents } from '@/features/calendar/events';
+import { buildRequestEvents } from '@/features/calendar/events';
+import { clearCycleHighlights, highlightCycles } from '@/features/calendar/cycleHighlight';
 import '@/features/calendar/calendar.css';
 
 export function CalendarPage() {
   const { data: requests = [], isLoading } = useRequests();
-  const { data: cycleInfo } = useWorkload('cycle-info');
 
   const [cycleView, setCycleView] = useState(false);
   const [selected, setSelected] = useState<Request | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const requestEvents = useMemo(() => buildRequestEvents(requests), [requests]);
+  const calRef = useRef<HTMLDivElement>(null);
+  const shiftRef = useRef(false);
+  const hoveredRef = useRef<string | null>(null);
 
-  const cycleEvents = useMemo(() => {
-    if (!cycleView) return [];
-    const windows = computeCycleWindows((cycleInfo as CycleInfo | undefined) ?? null);
-    return buildCycleBackgroundEvents(windows);
-  }, [cycleView, cycleInfo]);
+  const events = useMemo(() => buildRequestEvents(requests), [requests]);
 
-  const events = useMemo(() => [...requestEvents, ...cycleEvents], [requestEvents, cycleEvents]);
+  // Hover-driven cycle highlighting (only while Cycle View is on).
+  useEffect(() => {
+    const root = calRef.current;
+    if (!root || !cycleView) return;
+
+    const onPointer = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      const cell = target?.closest<HTMLElement>('.fc-daygrid-day[data-date]');
+      const date = cell?.getAttribute('data-date');
+      if (date && date !== hoveredRef.current) {
+        hoveredRef.current = date;
+        highlightCycles(root, date, shiftRef.current);
+      }
+    };
+    const onLeave = () => {
+      hoveredRef.current = null;
+      clearCycleHighlights(root);
+    };
+    const onShift = (e: KeyboardEvent) => {
+      if (e.key !== 'Shift') return;
+      shiftRef.current = e.type === 'keydown';
+      if (hoveredRef.current) highlightCycles(root, hoveredRef.current, shiftRef.current);
+    };
+
+    root.addEventListener('mouseover', onPointer);
+    root.addEventListener('mouseleave', onLeave);
+    window.addEventListener('keydown', onShift);
+    window.addEventListener('keyup', onShift);
+
+    return () => {
+      root.removeEventListener('mouseover', onPointer);
+      root.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('keydown', onShift);
+      window.removeEventListener('keyup', onShift);
+      hoveredRef.current = null;
+      shiftRef.current = false;
+      clearCycleHighlights(root);
+    };
+  }, [cycleView]);
 
   const handleEventClick = (arg: EventClickArg) => {
     const channelID = arg.event.extendedProps.channelID as number | string | undefined;
-    if (channelID === undefined) return; // background (cycle) events carry none
+    if (channelID === undefined) return;
     const request = requests.find((req) => req.channelID === channelID);
     if (request) {
       setSelected(request);
@@ -71,9 +106,16 @@ export function CalendarPage() {
       />
 
       <Card className="surface-card space-y-4 p-4 lg:p-6">
-        <CalendarLegend showCycle={cycleView} />
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <CalendarLegend showCycle={cycleView} />
+          {cycleView && (
+            <span className="text-xs text-muted-foreground">
+              Hover a day to highlight its cycle · hold <kbd className="rounded border border-border px-1">Shift</kbd> to reverse
+            </span>
+          )}
+        </div>
 
-        <div className="msa-calendar">
+        <div ref={calRef} className={cn('msa-calendar', cycleView && 'cycle-active')}>
           <FullCalendar
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
