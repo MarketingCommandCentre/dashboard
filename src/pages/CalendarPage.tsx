@@ -110,16 +110,23 @@ export function CalendarPage() {
           <CalendarLegend showCycle={cycleView} />
           {cycleView && (
             <span className="text-xs text-muted-foreground">
-              Hover a day to highlight its cycle · hold <kbd className="rounded border border-border px-1">Shift</kbd> to reverse
+              Hover a day to highlight its cycle · hold <kbd className="rounded border border-border px-1">Shift</kbd> to reverse · scroll for more months
             </span>
           )}
         </div>
 
         <div ref={calRef} className={cn('msa-calendar', cycleView && 'cycle-active')}>
           <FullCalendar
+            // Remount when toggling so the view + height switch cleanly.
+            key={cycleView ? 'cycle' : 'single'}
             plugins={[dayGridPlugin]}
-            initialView="dayGridMonth"
-            height="auto"
+            initialView={cycleView ? 'cycleGrid' : 'dayGridMonth'}
+            views={{
+              // Continuous multi-month grid so cycle windows can be followed
+              // across month boundaries (scrollable via the fixed height below).
+              cycleGrid: { type: 'dayGrid', duration: { months: 3 }, buttonText: '3 months' },
+            }}
+            height={cycleView ? 620 : 'auto'}
             events={events}
             eventClick={handleEventClick}
             headerToolbar={{ left: 'prev,next today', center: 'title', right: '' }}

@@ -211,7 +211,7 @@ export function SpreadsheetPage() {
       />
 
       {/* Filter bar */}
-      <Card className="surface-card flex flex-wrap items-center gap-3 p-4">
+      <Card className="surface-card flex flex-row flex-wrap items-center gap-3 p-4">
         <div className="relative min-w-[14rem] flex-1">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
