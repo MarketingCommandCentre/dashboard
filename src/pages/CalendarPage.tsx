@@ -116,24 +116,27 @@ export function CalendarPage() {
         </div>
 
         <div ref={calRef} className={cn('msa-calendar', cycleView && 'cycle-active')}>
-          <FullCalendar
-            // Remount when toggling so the view + height switch cleanly.
-            key={cycleView ? 'cycle' : 'single'}
-            plugins={[dayGridPlugin]}
-            initialView={cycleView ? 'cycleGrid' : 'dayGridMonth'}
-            views={{
-              // Continuous multi-month grid so cycle windows can be followed
-              // across month boundaries (scrollable via the fixed height below).
-              cycleGrid: { type: 'dayGrid', duration: { months: 3 }, buttonText: '3 months' },
-            }}
-            height={cycleView ? 620 : 'auto'}
-            events={events}
-            eventClick={handleEventClick}
-            headerToolbar={{ left: 'prev,next today', center: 'title', right: '' }}
-            dayMaxEvents={3}
-            firstDay={0}
-            eventDisplay="block"
-          />
+          {/* In cycle view render a continuous multi-month grid at natural
+              (compact) row height, clipped to a scrollable viewport so 6-7 weeks
+              are visible at once for following cycles across months. */}
+          <div className={cn(cycleView && 'max-h-[620px] overflow-y-auto rounded-lg border border-border')}>
+            <FullCalendar
+              // Remount when toggling so the view switches cleanly.
+              key={cycleView ? 'cycle' : 'single'}
+              plugins={[dayGridPlugin]}
+              initialView={cycleView ? 'cycleGrid' : 'dayGridMonth'}
+              views={{
+                cycleGrid: { type: 'dayGrid', duration: { months: 4 }, buttonText: '4 months' },
+              }}
+              height="auto"
+              events={events}
+              eventClick={handleEventClick}
+              headerToolbar={{ left: 'prev,next today', center: 'title', right: '' }}
+              dayMaxEvents={3}
+              firstDay={0}
+              eventDisplay="block"
+            />
+          </div>
         </div>
 
         {isLoading && (
