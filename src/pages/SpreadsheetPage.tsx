@@ -1,12 +1,6 @@
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  Download,
-  Search,
-} from 'lucide-react';
+import { Download, Search } from 'lucide-react';
 
 import { PageHeader } from '@/components/PageHeader';
 import { StatusBadge } from '@/components/StatusBadge';
@@ -32,34 +26,34 @@ import type { Request, RequestStatus, RequestType } from '@/types';
 
 import { MultiSelectFilter } from '@/features/spreadsheet/MultiSelectFilter';
 import {
-  compareRows,
   formatRequestType,
   resolveDepartment,
   resolveName,
-  type SortDir,
-  type SortKey,
   type SpreadsheetRow,
 } from '@/features/spreadsheet/helpers';
 
 const REQUEST_TYPES: RequestType[] = ['POST', 'REEL'];
-const STATUS_RANK = new Map<RequestStatus, number>(STATUS_ORDER.map((s, i) => [s, i]));
 
-interface Column {
-  key: SortKey;
-  label: string;
-}
+// Status groups in workflow-progress order; Done sits last (finished/archived).
+const GROUP_ORDER: RequestStatus[] = [
+  'IN_QUEUE',
+  'IN_PROGRESS',
+  'AWAITING_POSTING',
+  'BLOCKED',
+  'DONE',
+];
 
-const COLUMNS: Column[] = [
-  { key: 'title', label: 'Title' },
-  { key: 'status', label: 'Status' },
-  { key: 'type', label: 'Type' },
-  { key: 'department', label: 'Department' },
-  { key: 'requester', label: 'Requester' },
-  { key: 'assignee', label: 'Assignee' },
-  { key: 'postingDate', label: 'Posting Date' },
-  { key: 'createdAt', label: 'Created' },
-  { key: 'room', label: 'Room' },
-  { key: 'signup', label: 'Signup' },
+const COLUMNS = [
+  'Title',
+  'Status',
+  'Type',
+  'Department',
+  'Requester',
+  'Assignee',
+  'Posting Date',
+  'Created',
+  'Room',
+  'Signup',
 ];
 
 export function SpreadsheetPage() {
@@ -69,8 +63,6 @@ export function SpreadsheetPage() {
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [deptFilter, setDeptFilter] = useState<string[]>([]);
-  const [sortKey, setSortKey] = useState<SortKey>('postingDate');
-  const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [selected, setSelected] = useState<Request | null>(null);
 
   const all = useMemo(() => requests ?? [], [requests]);
@@ -151,28 +143,39 @@ export function SpreadsheetPage() {
     });
   }, [rows, search, statusFilter, typeFilter, deptFilter]);
 
-  const sorted = useMemo(() => {
-    const statusRank = (r: Request) =>
-      r.status ? (STATUS_RANK.get(r.status) ?? STATUS_ORDER.length) : STATUS_ORDER.length;
-    const next = [...filtered].sort((a, b) => compareRows(a, b, sortKey, statusRank));
-    return sortDir === 'asc' ? next : next.reverse();
-  }, [filtered, sortKey, sortDir]);
+  // Sort every row by posting date (ascending), then bucket into status groups
+  // rendered in workflow-progress order with a header before each — the legacy
+  // grouped spreadsheet layout.
+  const groups = useMemo(() => {
+    const byDate = [...filtered].sort((a, b) =>
+      (a.request.postingDate || '9999-99-99').localeCompare(b.request.postingDate || '9999-99-99'),
+    );
+    const buckets = new Map<string, SpreadsheetRow[]>();
+    for (const row of byDate) {
+      const key = row.request.status ?? 'UNKNOWN';
+      const bucket = buckets.get(key);
+      if (bucket) bucket.push(row);
+      else buckets.set(key, [row]);
+    }
+    const known = GROUP_ORDER.filter((s) => buckets.has(s));
+    const extras = [...buckets.keys()].filter((k) => !GROUP_ORDER.includes(k as RequestStatus));
+    return [...known, ...extras].map((key) => ({ key, rows: buckets.get(key) ?? [] }));
+  }, [filtered]);
+
+  const orderedRows = useMemo(() => groups.flatMap((g) => g.rows), [groups]);
 
   const summary = useMemo(() => buildSummary(filtered), [filtered]);
 
-  function toggleSort(key: SortKey) {
-    if (key === sortKey) {
-      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortKey(key);
-      setSortDir('asc');
-    }
+  function groupLabel(key: string): string {
+    return GROUP_ORDER.includes(key as RequestStatus)
+      ? statusLabel(key as RequestStatus)
+      : 'Unknown';
   }
 
   function handleExport() {
     exportToCsv(
       'msa-spreadsheet-view.csv',
-      sorted.map((row) => ({
+      orderedRows.map((row) => ({
         Title: row.title,
         Status: statusLabel(row.request.status),
         Type: row.type,
@@ -197,10 +200,10 @@ export function SpreadsheetPage() {
     >
       <PageHeader
         title="Spreadsheet"
-        description="Sortable table of every request."
+        description="Grouped by status, sorted by posting date."
         emoji="🧾"
         actions={
-          <Button variant="outline" size="sm" onClick={handleExport} disabled={sorted.length === 0}>
+          <Button variant="outline" size="sm" onClick={handleExport} disabled={orderedRows.length === 0}>
             <Download className="size-4" />
             Export CSV
           </Button>
@@ -250,8 +253,8 @@ export function SpreadsheetPage() {
       {/* Summary line */}
       <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
         <span className="font-medium">
-          {sorted.length} shown
-          {all.length > 0 && sorted.length !== all.length && (
+          {orderedRows.length} shown
+          {all.length > 0 && orderedRows.length !== all.length && (
             <span className="text-muted-foreground"> of {all.length}</span>
           )}
         </span>
@@ -264,16 +267,9 @@ export function SpreadsheetPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-border bg-muted text-left text-xs uppercase tracking-wide text-primary dark:text-foreground">
-                {COLUMNS.map((col) => (
-                  <th key={col.key} className="px-4 py-3 font-semibold">
-                    <button
-                      type="button"
-                      onClick={() => toggleSort(col.key)}
-                      className="flex items-center gap-1 transition-colors hover:text-foreground"
-                    >
-                      {col.label}
-                      <SortIcon active={sortKey === col.key} dir={sortDir} />
-                    </button>
+                {COLUMNS.map((label) => (
+                  <th key={label} className="whitespace-nowrap px-4 py-3 font-semibold">
+                    {label}
                   </th>
                 ))}
               </tr>
@@ -293,62 +289,75 @@ export function SpreadsheetPage() {
                   </td>
                 </tr>
               )}
-              {!isLoading && !isError && sorted.length === 0 && (
+              {!isLoading && !isError && orderedRows.length === 0 && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="px-4 py-10 text-center text-muted-foreground">
                     No requests match the current filters.
                   </td>
                 </tr>
               )}
-              {sorted.map((row) => {
-                const r = row.request;
-                const overdue = isOverdue(r.postingDate, r.status);
-                return (
-                  <tr
-                    key={String(r.channelID)}
-                    onClick={() => setSelected(r)}
-                    className="cursor-pointer border-b transition-colors last:border-0 hover:bg-primary/[0.06]"
-                  >
-                    <td className="max-w-[18rem] truncate px-4 py-3 font-medium">{row.title}</td>
-                    <td className="px-4 py-3">
-                      <StatusBadge status={r.status} />
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{row.type}</td>
-                    <td className="whitespace-nowrap px-4 py-3">{row.department}</td>
-                    <td className="whitespace-nowrap px-4 py-3">{row.requester}</td>
-                    <td className="whitespace-nowrap px-4 py-3">{row.assignee}</td>
+              {groups.map((group) => (
+                <Fragment key={group.key}>
+                  <tr>
                     <td
-                      className={cn(
-                        'whitespace-nowrap px-4 py-3',
-                        overdue && 'font-semibold text-destructive',
-                      )}
+                      colSpan={COLUMNS.length}
+                      className="border-y-2 border-[rgba(211,175,90,0.3)] bg-[rgba(211,175,90,0.12)] px-4 py-2 text-sm font-bold text-primary dark:text-foreground"
                     >
-                      {formatDate(r.postingDate)}
-                      {overdue && ' ⚠️'}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
-                      {formatDateTime(r.createdAt)}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
-                      {row.room || '—'}
-                    </td>
-                    <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                      {row.signup ? (
-                        <a
-                          href={row.signup}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary underline-offset-2 hover:underline"
-                        >
-                          Link
-                        </a>
-                      ) : (
-                        <span className="text-muted-foreground">—</span>
-                      )}
+                      {groupLabel(group.key)}{' '}
+                      <span className="font-semibold text-muted-foreground">({group.rows.length})</span>
                     </td>
                   </tr>
-                );
-              })}
+                  {group.rows.map((row) => {
+                    const r = row.request;
+                    const overdue = isOverdue(r.postingDate, r.status);
+                    return (
+                      <tr
+                        key={String(r.channelID)}
+                        onClick={() => setSelected(r)}
+                        className="cursor-pointer border-b transition-colors last:border-0 hover:bg-[rgba(211,175,90,0.08)]"
+                      >
+                        <td className="max-w-[18rem] truncate px-4 py-3 font-medium">{row.title}</td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={r.status} />
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{row.type}</td>
+                        <td className="whitespace-nowrap px-4 py-3">{row.department}</td>
+                        <td className="whitespace-nowrap px-4 py-3">{row.requester}</td>
+                        <td className="whitespace-nowrap px-4 py-3">{row.assignee}</td>
+                        <td
+                          className={cn(
+                            'whitespace-nowrap px-4 py-3',
+                            overdue && 'font-semibold text-destructive',
+                          )}
+                        >
+                          {formatDate(r.postingDate)}
+                          {overdue && ' ⚠️'}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                          {formatDateTime(r.createdAt)}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                          {row.room || '—'}
+                        </td>
+                        <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                          {row.signup ? (
+                            <a
+                              href={row.signup}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary underline-offset-2 hover:underline"
+                            >
+                              Link
+                            </a>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </Fragment>
+              ))}
             </tbody>
           </table>
         </div>
@@ -363,11 +372,6 @@ export function SpreadsheetPage() {
       />
     </motion.div>
   );
-}
-
-function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
-  if (!active) return <ArrowUpDown className="size-3 opacity-40" />;
-  return dir === 'asc' ? <ArrowUp className="size-3" /> : <ArrowDown className="size-3" />;
 }
 
 /** Build the inline summary line: status counts + overdue tally. */
