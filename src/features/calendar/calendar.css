@@ -93,9 +93,19 @@
   transition: background-color 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* Compact cells in cycle view so ~6-7 weeks fit in the scroll viewport. */
+/* Compact, fixed-height cells in cycle view so ~6-7 weeks fit the viewport.
+   FullCalendar stretches rows to its aspect ratio, so the heights are forced. */
+.msa-calendar.cycle-active .fc-daygrid-body tr {
+  height: 76px !important;
+}
+
 .msa-calendar.cycle-active .fc-daygrid-day-frame {
-  min-height: 76px;
+  min-height: 0 !important;
+  height: 76px !important;
+}
+
+.msa-calendar.cycle-active .fc-daygrid-day-events {
+  min-height: 0 !important;
 }
 
 .msa-calendar.cycle-active .fc-daygrid-day-number {

@@ -132,7 +132,7 @@ export function CalendarPage() {
               events={events}
               eventClick={handleEventClick}
               headerToolbar={{ left: 'prev,next today', center: 'title', right: '' }}
-              dayMaxEvents={3}
+              dayMaxEvents={cycleView ? 1 : 3}
               firstDay={0}
               eventDisplay="block"
             />
