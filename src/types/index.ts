@@ -43,6 +43,8 @@ export interface AuditEvent {
   entityId: number;
   eventDetails: string;
   performedBy: string;
+  /** Optional structured JSON detail (stored as a string on the backend). */
+  metadata?: string | Record<string, unknown> | null;
   /** ISO date-time. */
   eventTimestamp: string;
 }

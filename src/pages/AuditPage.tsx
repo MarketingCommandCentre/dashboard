@@ -29,12 +29,13 @@ import { cn } from '@/lib/utils';
 import type { AuditEvent } from '@/types';
 import {
   ALL_VALUE,
-  BOT_ID,
   distinctValues,
   eventTypeCounts,
   eventTypeVariant,
+  parsePerformedBy,
   performerName,
 } from '@/features/audit/utils';
+import { formatAuditDetails, metadataUserIds } from '@/features/audit/details';
 
 const PAGE_SIZE = 25;
 
@@ -49,12 +50,15 @@ export function AuditPage() {
   const [toDate, setToDate] = useState('');
   const [page, setPage] = useState(1);
 
-  // Resolve every non-bot performer id to a display name (deduped in the hook).
+  // Resolve every performer's underlying Discord user id to a display name. The
+  // backend stores `performedBy` as an Actor string (e.g. "user:123",
+  // "bot:discord-bot;on-behalf-of:123"), so we parse out the user id first.
   const performerIds = useMemo(
     () =>
-      events
-        .map((event) => event.performedBy)
-        .filter((id) => id && String(id) !== BOT_ID),
+      events.flatMap((event) => {
+        const ids = [parsePerformedBy(event.performedBy).userId, ...metadataUserIds(event)];
+        return ids.filter((id): id is string => Boolean(id));
+      }),
     [events],
   );
   const { data: names } = useDiscordNames(performerIds);
@@ -130,7 +134,7 @@ export function AuditPage() {
       'Entity Type': event.entityType ?? '',
       'Entity Id': String(event.entityId ?? ''),
       'Performed By': performerName(event.performedBy, names),
-      Details: event.eventDetails ?? '',
+      Details: formatAuditDetails(event, names),
     }));
     const stamp = new Date().toISOString().split('T')[0];
     exportToCsv(`audit-log-${stamp}.csv`, rows);
@@ -400,7 +404,7 @@ function AuditTable({
         </thead>
         <tbody>
           {events.map((event) => {
-            const isBot = String(event.performedBy) === BOT_ID;
+            const isBot = parsePerformedBy(event.performedBy).kind === 'bot';
             return (
               <tr
                 key={String(event.id)}
@@ -423,7 +427,7 @@ function AuditTable({
                 </td>
                 <td className="max-w-md px-4 py-3 text-muted-foreground">
                   <span className="line-clamp-2 break-words" title={event.eventDetails}>
-                    {event.eventDetails || '—'}
+                    {formatAuditDetails(event, names) || '—'}
                   </span>
                 </td>
               </tr>
