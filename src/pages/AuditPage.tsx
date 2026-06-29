@@ -389,13 +389,13 @@ function AuditTable({
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-border/60 text-left text-xs text-muted-foreground">
-            <th className="px-4 py-3 font-medium">Timestamp</th>
-            <th className="px-4 py-3 font-medium">Event Type</th>
-            <th className="px-4 py-3 font-medium">Entity Type</th>
-            <th className="px-4 py-3 font-medium">Entity Id</th>
-            <th className="px-4 py-3 font-medium">Performed By</th>
-            <th className="px-4 py-3 font-medium">Details</th>
+          <tr className="border-b-2 border-border bg-muted text-left text-xs uppercase tracking-wide text-primary dark:text-foreground">
+            <th className="px-4 py-3 font-semibold">Timestamp</th>
+            <th className="px-4 py-3 font-semibold">Event Type</th>
+            <th className="px-4 py-3 font-semibold">Entity Type</th>
+            <th className="px-4 py-3 font-semibold">Entity Id</th>
+            <th className="px-4 py-3 font-semibold">Performed By</th>
+            <th className="px-4 py-3 font-semibold">Details</th>
           </tr>
         </thead>
         <tbody>

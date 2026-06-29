@@ -30,11 +30,14 @@ export function KanbanColumn({
     <div
       ref={setNodeRef}
       className={cn(
-        'section-shell flex min-w-[260px] flex-1 flex-col rounded-xl border bg-muted/30 transition-colors',
+        'flex min-w-[260px] flex-1 flex-col overflow-hidden rounded-xl border bg-muted/30 transition-colors',
         isOver && 'bg-muted/70 ring-2 ring-primary/30',
       )}
     >
-      <div className={cn('flex items-center justify-between gap-2 border-b-2 px-4 py-3', color.border)}>
+      <div
+        className={cn('flex items-center justify-between gap-2 border-b-2 px-4 py-3', color.border)}
+        style={{ backgroundColor: `${color.hex}1a` }}
+      >
         <span className="text-sm font-semibold">{statusLabel(status)}</span>
         <span
           className={cn(

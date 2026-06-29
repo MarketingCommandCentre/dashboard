@@ -263,7 +263,7 @@ export function SpreadsheetPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
+              <tr className="border-b-2 border-border bg-muted text-left text-xs uppercase tracking-wide text-primary dark:text-foreground">
                 {COLUMNS.map((col) => (
                   <th key={col.key} className="px-4 py-3 font-semibold">
                     <button

@@ -1,5 +1,4 @@
 import { X } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { statusLabel } from '@/lib/status';
 import type { DiscordNameMap } from '@/types';
 import { departmentName, type RequestFilters } from './useRequestFilters';
@@ -61,17 +60,20 @@ export function ActiveFilterChips({
   return (
     <div className="flex flex-wrap gap-1.5">
       {chips.map((chip) => (
-        <Badge key={chip.key} variant="outline" className="gap-1 py-1 pl-2.5 pr-1">
+        <span
+          key={chip.key}
+          className="inline-flex items-center gap-1 rounded-full border border-border bg-muted py-1 pl-2.5 pr-1 text-[0.7rem] font-medium text-foreground"
+        >
           <span className="max-w-48 truncate">{chip.label}</span>
           <button
             type="button"
             onClick={chip.onRemove}
             aria-label={`Remove ${chip.label}`}
-            className="inline-flex size-4 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="inline-flex size-4 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             <X className="size-3" />
           </button>
-        </Badge>
+        </span>
       ))}
     </div>
   );
