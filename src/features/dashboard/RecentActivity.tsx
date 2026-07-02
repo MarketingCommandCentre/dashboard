@@ -13,7 +13,7 @@ function sortByUpdated(requests: Request[]): Request[] {
       const bt = b.updatedAt ?? b.createdAt ?? '';
       return bt.localeCompare(at);
     })
-    .slice(0, 6);
+    .slice(0, 10);
 }
 
 export function RecentActivity({
@@ -35,13 +35,16 @@ export function RecentActivity({
           Recent Activity
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 p-0">
+      {/* On desktop the rail beside this card sets the row height; the list is
+          absolutely positioned so it fills (and scrolls within) that height
+          without stretching the row itself. On mobile it gets a fixed height. */}
+      <CardContent className="relative min-h-0 flex-1 p-0">
         {loading ? (
           <p className="p-5 text-sm text-muted-foreground">Loading recent activity…</p>
         ) : recent.length === 0 ? (
           <p className="p-5 text-sm text-muted-foreground">No recent activity.</p>
         ) : (
-          <ScrollArea className="h-[280px]">
+          <ScrollArea className="h-[320px] lg:absolute lg:inset-0 lg:h-full">
             <ul className="flex flex-col gap-2 p-4">
               {recent.map((r) => (
                 <li key={String(r.channelID)}>

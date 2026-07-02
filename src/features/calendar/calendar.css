@@ -151,6 +151,36 @@
   box-shadow: inset 0 0 0 2px #4dd365;
 }
 
+/* LoadBalance™ mode: draggable events + day-load heat tint. */
+.msa-calendar.lb-active .fc-daygrid-event {
+  cursor: grab;
+}
+
+.msa-calendar.lb-active .fc-daygrid-event:active {
+  cursor: grabbing;
+}
+
+.msa-calendar.lb-active .fc-daygrid-day {
+  transition: background-color 0.15s ease;
+}
+
+.msa-calendar .fc-daygrid-day.lb-heat-light {
+  background-color: color-mix(in srgb, #f39c12 8%, transparent);
+}
+
+.msa-calendar .fc-daygrid-day.lb-heat-moderate {
+  background-color: color-mix(in srgb, #f39c12 18%, transparent);
+}
+
+.msa-calendar .fc-daygrid-day.lb-heat-busy {
+  background-color: color-mix(in srgb, #e74c3c 22%, transparent);
+}
+
+.msa-calendar .fc-daygrid-day.lb-heat-overloaded {
+  background-color: color-mix(in srgb, #e74c3c 38%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, #e74c3c 70%, transparent);
+}
+
 .msa-calendar .cycle-label {
   position: absolute;
   top: 2px;

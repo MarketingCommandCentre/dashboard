@@ -1,14 +1,4 @@
 import { useMemo, useState } from 'react';
-import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  closestCorners,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-  type DragStartEvent,
-} from '@dnd-kit/core';
 import { motion } from 'framer-motion';
 
 import { PageHeader } from '@/components/PageHeader';
@@ -21,23 +11,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useRequests, useSetRequestStatus, useAdvanceRequest } from '@/hooks/useRequests';
+import { useRequests } from '@/hooks/useRequests';
 import { useDiscordNames, useDiscordRoleNames } from '@/hooks/useDiscordNames';
 import { STATUS_ORDER } from '@/lib/status';
 import type { Request, RequestStatus } from '@/types';
 
 import { KanbanColumn } from '@/features/kanban/KanbanColumn';
-import { KanbanCardOverlay } from '@/features/kanban/KanbanCard';
 
 const ALL_DEPARTMENTS = '__all__';
 
 export function KanbanPage() {
   const { data: requests, isLoading, isError } = useRequests();
-  const setStatus = useSetRequestStatus();
-  const advance = useAdvanceRequest();
 
   const [department, setDepartment] = useState<string>(ALL_DEPARTMENTS);
-  const [activeRequest, setActiveRequest] = useState<Request | null>(null);
   const [selected, setSelected] = useState<Request | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -91,37 +77,9 @@ export function KanbanPage() {
     return map;
   }, [filtered]);
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
-
   const handleOpen = (request: Request) => {
     setSelected(request);
     setDialogOpen(true);
-  };
-
-  const handleAdvance = (request: Request) => {
-    advance.mutate(request.channelID);
-  };
-
-  const handleDragStart = (event: DragStartEvent) => {
-    const request = event.active.data.current?.request as Request | undefined;
-    setActiveRequest(request ?? null);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    setActiveRequest(null);
-    const { active, over } = event;
-    if (!over) return;
-
-    const request = active.data.current?.request as Request | undefined;
-    if (!request) return;
-
-    // The droppable id is either a column status, or another card whose
-    // column we resolve from its request data.
-    const overData = over.data.current?.request as Request | undefined;
-    const targetStatus = (overData?.status ?? (over.id as RequestStatus)) as RequestStatus;
-
-    if (!STATUS_ORDER.includes(targetStatus) || targetStatus === request.status) return;
-    setStatus.mutate({ channelId: request.channelID, status: targetStatus });
   };
 
   return (
@@ -133,7 +91,7 @@ export function KanbanPage() {
       >
         <PageHeader
           title="Kanban"
-          description="Drag requests across status columns, or advance them in one click."
+          description="Track requests across status columns. Drag & drop returns in a future update."
           emoji="🗂️"
           actions={
             <Select
@@ -170,40 +128,18 @@ export function KanbanPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
         >
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          >
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {STATUS_ORDER.map((status) => (
-                <KanbanColumn
-                  key={status}
-                  status={status}
-                  requests={byStatus[status]}
-                  nameFor={nameFor}
-                  departmentFor={departmentFor}
-                  onOpen={handleOpen}
-                  onAdvance={handleAdvance}
-                />
-              ))}
-            </div>
-
-            <DragOverlay>
-              {activeRequest ? (
-                <div className="w-[260px]">
-                  <KanbanCardOverlay
-                    request={activeRequest}
-                    assigneeName={nameFor(activeRequest.assignedToID)}
-                    departmentName={departmentFor(activeRequest.requesterDepartmentID)}
-                    onOpen={() => {}}
-                    onAdvance={() => {}}
-                  />
-                </div>
-              ) : null}
-            </DragOverlay>
-          </DndContext>
+          <div className="flex gap-4 overflow-x-auto pb-2">
+            {STATUS_ORDER.map((status) => (
+              <KanbanColumn
+                key={status}
+                status={status}
+                requests={byStatus[status]}
+                nameFor={nameFor}
+                departmentFor={departmentFor}
+                onOpen={handleOpen}
+              />
+            ))}
+          </div>
         </motion.div>
       )}
 

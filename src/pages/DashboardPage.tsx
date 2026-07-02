@@ -14,7 +14,6 @@ import { RecentActivity } from '@/features/dashboard/RecentActivity';
 import { QuickActions } from '@/features/dashboard/QuickActions';
 import { MiniCalendar } from '@/features/dashboard/MiniCalendar';
 import { CurrentCycle } from '@/features/dashboard/CurrentCycle';
-import { QuickLinks } from '@/features/dashboard/QuickLinks';
 
 const intro = {
   initial: { opacity: 0, y: 16 },
@@ -51,17 +50,19 @@ export function DashboardPage() {
 
       <StatCards stats={stats} loading={isLoading} />
 
+      {/* Main feed + compact rail, then the cycle band across the bottom. */}
       <motion.div {...intro} className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <RecentActivity requests={requests} loading={isLoading} onSelect={openRequest} />
         </div>
-        <QuickActions onRefresh={() => refetch()} refreshing={isFetching} />
+        <div className="flex flex-col gap-4">
+          <QuickActions onRefresh={() => refetch()} refreshing={isFetching} />
+          <MiniCalendar requests={requests} />
+        </div>
       </motion.div>
 
-      <motion.div {...intro} className="grid gap-4 lg:grid-cols-3">
-        <MiniCalendar requests={requests} />
+      <motion.div {...intro}>
         <CurrentCycle />
-        <QuickLinks />
       </motion.div>
 
       <RequestDetailDialog

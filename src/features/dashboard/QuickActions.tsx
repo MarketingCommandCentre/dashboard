@@ -12,14 +12,14 @@ export function QuickActions({
 }) {
   const navigate = useNavigate();
   return (
-    <Card className="surface-card flex h-full flex-col border">
+    <Card className="surface-card border">
       <CardHeader className="border-b pb-4">
         <CardTitle className="flex items-center gap-2">
           <Zap className="size-4 text-primary" />
           Quick Actions
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col gap-2 p-5">
+      <CardContent className="flex flex-col gap-2 p-5">
         <Button variant="outline" className="justify-start" onClick={() => navigate('/requests')}>
           <FileText className="size-4" />
           View All Events

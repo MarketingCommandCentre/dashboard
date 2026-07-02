@@ -32,59 +32,62 @@ export function CurrentCycle() {
                 Using local cycle calculation (backend unavailable).
               </p>
             )}
-            {/* Current development cycle */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-                  🎨 Development
-                </span>
-                <span className="text-sm font-semibold">Cycle {windows.current.cycleNumber}</span>
+            {/* Current + next cycle side by side when the card is full width. */}
+            <div className="grid gap-4 md:grid-cols-2 md:gap-8">
+              {/* Current development cycle */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                    🎨 Development
+                  </span>
+                  <span className="text-sm font-semibold">Cycle {windows.current.cycleNumber}</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  📅 {formatDate(windows.current.developmentStart)} –{' '}
+                  {formatDate(windows.current.developmentEnd)}
+                </p>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                  <div
+                    className="h-full rounded-full bg-primary transition-all"
+                    style={{ width: `${windows.current.progress}%` }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {windows.current.daysElapsed} of {windows.current.totalDays} days (
+                  {windows.current.progress}%)
+                </p>
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <Stat label="Days Remaining" value={String(windows.current.daysRemaining)} />
+                  <Stat label="Task Day" value={formatDate(windows.current.developmentEnd)} />
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground">
-                📅 {formatDate(windows.current.developmentStart)} –{' '}
-                {formatDate(windows.current.developmentEnd)}
-              </p>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full bg-primary transition-all"
-                  style={{ width: `${windows.current.progress}%` }}
-                />
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {windows.current.daysElapsed} of {windows.current.totalDays} days (
-                {windows.current.progress}%)
-              </p>
-              <div className="grid grid-cols-2 gap-3 pt-1">
-                <Stat label="Days Remaining" value={String(windows.current.daysRemaining)} />
-                <Stat label="Task Day" value={formatDate(windows.current.developmentEnd)} />
-              </div>
-            </div>
 
-            {/* Next cycle */}
-            <div className="space-y-2 border-t pt-4">
-              <div className="flex items-center justify-between">
-                <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                  ⏭️ Next Cycle
-                </span>
-                <span className="text-sm font-semibold">Cycle {windows.next.cycleNumber}</span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                📅 {formatDate(windows.next.developmentStart)} –{' '}
-                {formatDate(windows.next.developmentEnd)}
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                <Stat label="Starts In" value={`${windows.next.daysUntilStart} days`} />
-                <Stat label="Duration" value="14 days" />
-              </div>
-              <div className="rounded-lg bg-muted/50 p-3 text-xs">
-                <p className="font-medium">📅 Posting Window</p>
-                <p className="mt-1 text-muted-foreground">
-                  {formatDate(windows.next.postingStart)} – {formatDate(windows.next.postingEnd)}
+              {/* Next cycle */}
+              <div className="space-y-2 border-t pt-4 md:border-l md:border-t-0 md:pl-8 md:pt-0">
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    ⏭️ Next Cycle
+                  </span>
+                  <span className="text-sm font-semibold">Cycle {windows.next.cycleNumber}</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  📅 {formatDate(windows.next.developmentStart)} –{' '}
+                  {formatDate(windows.next.developmentEnd)}
                 </p>
-                <p className="mt-1 text-muted-foreground">
-                  Content from this cycle is posted during this window (
-                  {windows.next.daysUntilPosting} days from now).
-                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <Stat label="Starts In" value={`${windows.next.daysUntilStart} days`} />
+                  <Stat label="Duration" value="14 days" />
+                </div>
+                <div className="rounded-lg bg-muted/50 p-3 text-xs">
+                  <p className="font-medium">📅 Posting Window</p>
+                  <p className="mt-1 text-muted-foreground">
+                    {formatDate(windows.next.postingStart)} – {formatDate(windows.next.postingEnd)}
+                  </p>
+                  <p className="mt-1 text-muted-foreground">
+                    Content from this cycle is posted during this window (
+                    {windows.next.daysUntilPosting} days from now).
+                  </p>
+                </div>
               </div>
             </div>
           </>

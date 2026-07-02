@@ -55,14 +55,14 @@ export function MiniCalendar({ requests }: { requests: Request[] }) {
   }, [requests]);
 
   return (
-    <Card className="surface-card flex h-full flex-col border">
+    <Card className="surface-card border">
       <CardHeader className="border-b pb-4">
         <CardTitle className="flex items-center gap-2">
           <CalendarDays className="size-4 text-primary" />
           This Month
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 p-5">
+      <CardContent className="p-5">
         <p className="mb-3 text-center text-sm font-medium text-muted-foreground">{monthName}</p>
         <div className="grid grid-cols-7 gap-1 text-center">
           {WEEKDAYS.map((w) => (
@@ -80,7 +80,7 @@ export function MiniCalendar({ requests }: { requests: Request[] }) {
                 key={cell.day}
                 title={titles || undefined}
                 className={cn(
-                  'relative flex aspect-square flex-col items-center justify-center rounded-lg text-xs',
+                  'relative flex h-9 flex-col items-center justify-center rounded-lg text-xs',
                   cell.isToday ? 'bg-primary/10 font-semibold text-primary' : 'text-foreground',
                   cell.events.length > 0 && !cell.isToday && 'bg-muted/40',
                 )}
