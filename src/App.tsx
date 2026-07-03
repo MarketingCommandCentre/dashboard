@@ -16,6 +16,7 @@ import { AnalyticsPage } from '@/pages/AnalyticsPage';
 import { AuditPage } from '@/pages/AuditPage';
 import { WorkloadPage } from '@/pages/WorkloadPage';
 import { ToolsPage } from '@/pages/ToolsPage';
+import { UnauthorizedPage } from '@/pages/UnauthorizedPage';
 
 const DEV_NO_AUTH = import.meta.env.VITE_DEV_NO_AUTH === 'true';
 
@@ -54,21 +55,19 @@ function AuthenticatedApp() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppShell />}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/requests" element={<RequestsPage />} />
-          <Route path="/spreadsheet" element={<SpreadsheetPage />} />
-          <Route path="/kanban" element={<KanbanPage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/audit" element={<AuditPage />} />
-          <Route path="/workload" element={<WorkloadPage />} />
-          <Route path="/tools" element={<ToolsPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route element={<AppShell />}>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/requests" element={<RequestsPage />} />
+        <Route path="/spreadsheet" element={<SpreadsheetPage />} />
+        <Route path="/kanban" element={<KanbanPage />} />
+        <Route path="/calendar" element={<CalendarPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/audit" element={<AuditPage />} />
+        <Route path="/workload" element={<WorkloadPage />} />
+        <Route path="/tools" element={<ToolsPage />} />
+      </Route>
+    </Routes>
   );
 }
 
@@ -77,7 +76,14 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <AppInit />
-        <AuthenticatedApp />
+        <BrowserRouter>
+          <Routes>
+            {/* Reachable without auth — the backend redirects here when the
+                user isn't a member of the required Discord guild. */}
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="*" element={<AuthenticatedApp />} />
+          </Routes>
+        </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>
   );

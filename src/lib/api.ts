@@ -25,6 +25,16 @@ export class ApiError extends Error {
   }
 }
 
+/** Extract the machine-readable `code` field from an API error body, if any. */
+function errorCodeOf(body: string): string | null {
+  try {
+    const parsed = JSON.parse(body) as { code?: unknown };
+    return typeof parsed.code === 'string' ? parsed.code : null;
+  } catch {
+    return null;
+  }
+}
+
 interface RequestInitExt extends Omit<RequestInit, 'body'> {
   body?: unknown;
   /** Sent as the X-Discord-User-Id header when provided. */
@@ -70,8 +80,14 @@ export async function apiFetch<T>(path: string, init: RequestInitExt = {}): Prom
 
   if (response.status === 401 || response.status === 403) {
     clearAuthToken();
-    emitUnauthorized();
     const text = await response.text().catch(() => '');
+    if (errorCodeOf(text) === 'NOT_IN_GUILD' && window.location.pathname !== '/unauthorized') {
+      // The backend rejected us for not being in the required Discord guild —
+      // show the dedicated unauthorized page rather than the login screen.
+      window.location.assign('/unauthorized?reason=not_in_guild');
+    } else {
+      emitUnauthorized();
+    }
     throw new ApiError(response.status, `Unauthorized (${response.status})`, text);
   }
 
