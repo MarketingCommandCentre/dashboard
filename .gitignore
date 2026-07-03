@@ -38,3 +38,9 @@ coverage/
 Thumbs.db
 .DS_Store
 Desktop.ini
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
