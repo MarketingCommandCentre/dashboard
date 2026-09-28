@@ -111,11 +111,16 @@ export async function apiFetch<T>(path: string, init: RequestInitExt = {}): Prom
 // strings. All id-consuming API helpers accept `number | string`, and the UI
 // stringifies ids for display, so this is safe. (Ported from legacy/api-service.js.)
 const ID_FIELDS =
-  'channelID|requesterID|assignedToID|additionalAssigneeID|additionalAsigneeID|requesterDepartmentID|requesterDepartmentid|mainMessageID|entityId|id';
+  'channelID|requesterID|assignedToID|additionalAssigneeID|additionalAsigneeID|requesterDepartmentID|requesterDepartmentid|mainMessageID|entityId|id|userId|roleId|guildId|assigneeIds|userIds';
 
 function parseJsonPreservingIds(text: string): unknown {
   const scalar = new RegExp(`"(${ID_FIELDS})"\\s*:\\s*(\\d{15,})`, 'g');
-  const fixed = text.replace(scalar, '"$1":"$2"');
+  const array = new RegExp(`"(${ID_FIELDS})"\\s*:\\s*\\[([^\\]]*)\\]`, 'g');
+  const fixed = text
+    .replace(scalar, '"$1":"$2"')
+    .replace(array, (_, key: string, values: string) =>
+      `"${key}":[${values.replace(/(^|[^"\d])(\d{15,})/g, '$1"$2"')}]`,
+    );
   return JSON.parse(fixed);
 }
 

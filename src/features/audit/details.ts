@@ -10,7 +10,8 @@ export function parseMetadata(event: AuditEvent): Record<string, unknown> | null
   if (!raw) return null;
   if (typeof raw === 'object') return raw as Record<string, unknown>;
   try {
-    const parsed = JSON.parse(raw);
+    // Quote bare snowflakes (e.g. inside assigneeIds arrays) so JSON.parse doesn't round them.
+    const parsed = JSON.parse(raw.replace(/([:[,]\s*)(\d{15,})(?=\s*[,\]}])/g, '$1"$2"'));
     return parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : null;
   } catch {
     return null;
